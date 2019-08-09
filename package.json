@@ -1,22 +1,22 @@
 {
-  "name": "electron-quick-start",
+  "name": "test-rxdb-electron-attachments",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "browserify": "browserify renderer.js -o browser.js",
+    "test:node": "node node.js"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
-  "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "license": "MIT",
   "devDependencies": {
+    "browserify": "^16.5.0",
     "electron": "^6.0.1"
+  },
+  "dependencies": {
+    "pouchdb-adapter-idb": "7.0.0",
+    "pouchdb-adapter-memory": "7.0.0",
+    "rxdb": "8.3.0",
+    "rxjs": "6.5.2"
   }
 }
