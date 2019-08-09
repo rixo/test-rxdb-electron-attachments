@@ -29,21 +29,22 @@ async function testAttachments(adapter) {
 
     await db.collection({
       name: 'foo',
-      schema: fooSchema,
+      schema: {
+        version: 0,
+        properties: {
+          name: {
+            type: 'string',
+          },
+        },
+        attachments: {},
+      },
     })
 
-    // insert
+    // create test doc
     {
-      db.foo.insert({
+      const doc = await db.foo.insert({
         name: 'bar',
       })
-    }
-
-    // putAttachment
-    {
-      const doc = await db.foo.findOne({ name: 'bar' }).exec()
-      assert(doc.name === 'bar', 'record loaded')
-
       await doc.putAttachment({
         id: 'attached',
         data: 'Lorem ipsum dolor sit amet',
@@ -51,6 +52,7 @@ async function testAttachments(adapter) {
       })
     }
 
+    // test attachments
     {
       const doc = await db.foo.findOne({ name: 'bar' }).exec()
       assert(doc.name === 'bar', 'record loaded')
@@ -59,8 +61,7 @@ async function testAttachments(adapter) {
       assert(attachments.length === 1)
 
       const attachment = await doc.getAttachment('attached')
-      const value = await attachment.getStringData()
-
+      const value = await attachment.getStringData() // THROWS in electron + idb
       assert(value === 'Lorem ipsum dolor sit amet')
     }
 
